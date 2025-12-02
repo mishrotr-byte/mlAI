@@ -127,3 +127,11 @@ export default function GodModeFooter() {
     </>
   );
 }
+import GodModeFooter from '../components/GodModeFooter';
+
+// Где-то в return главного компонента:
+<>
+  {/* весь твой сайт */}
+  
+  <GodModeFooter />
+</>
