@@ -1,0 +1,6 @@
+GROQ_API_KEY=gsk_твой_новый_от_groq
+OPENAI_API_KEY=sk-твой_новый_от_openai
+MONGODB_URI=mongodb+srv://твой_free_atlas_cluster?retryWrites=true&w=majority # Зарегистрись на mongodb.com/atlas бесплатно
+JWT_SECRET=твой_секретный_ключ_для_токенов
+BACKEND_URL=http://localhost:5000 # потом смени на прод
+TELEGRAM_BOT_TOKEN=токен_от_@BotFather_для_@mmrls_bot # Получи в Telegram
