@@ -29,3 +29,32 @@ router.post('/generate-video', async (req, res) => {
 });
 
 module.exports = router;
+// Генерация видео через Sora (только для тех, у кого есть доступ)
+router.post('/generate-video-sora', async (req, res) => {
+  try {
+    const { prompt, duration = 5 } = req.body; // длительность в секундах (4–10 обычно)
+
+    const response = await openai.video.generations.create({
+      model: "sora-1.0", // или "sora" — зависит от того, как OpenAI называет в 2025
+      prompt: prompt,
+      duration: duration,
+      size: "1024x576", // стандарт Sora 16:9
+      quality: "hd"
+    });
+
+    const videoUrl = response.data[0].url;
+
+    res.json({ 
+      success: true, 
+      url: videoUrl,
+      message: "Видео готово за секунды, потому что ты — mitrsht"
+    });
+
+  } catch (error) {
+    console.error("Sora error:", error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message || "Sora недоступна или квота кончилась" 
+    });
+  }
+});
