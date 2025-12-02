@@ -135,3 +135,40 @@ export default function Chatbot({ user }) {
     </motion.div>
   );
 }
+const generateSoraVideo = async (prompt) => {
+  if (!prompt.trim()) return;
+  
+  const loadingMsg = { role: 'assistant', content: 'Sora запущена... генерирую видео (5–30 сек)', loading: true, timestamp: Date.now() };
+  setMessages(prev => [...prev, loadingMsg]);
+
+  try {
+    const res = await fetch('/api/generate-video-sora', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setMessages(prev => prev.map(m => 
+        m.loading ? { ...m, content: `Видео по запросу "${prompt}" готово:`, video: data.url, loading: false } : m
+      ));
+    } else {
+      setMessages(prev => prev.map(m => 
+        m.loading ? { ...m, content: `Ошибка Sora: ${data.error}`, loading: false } : m
+      ));
+    }
+  } catch (e) {
+    setMessages(prev => prev.map(m => 
+      m.loading ? { ...m, content: 'Сора упала. Попробуй позже.', loading: false } : m
+    ));
+  }
+};
+<button 
+  onClick={() => generateSoraVideo(input || transcript)}
+  className="p-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded hover:scale-110 transition-all"
+  title="Sora — генерация видео (доступ только у богов)">
+  <Video size={20} className="drop-shadow-lg" />
+  <span className="text-xs">SORA</span>
+</button>
